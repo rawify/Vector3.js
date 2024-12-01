@@ -1,6 +1,5 @@
 # Vector3.js
 
-[![NPM Package](https://img.shields.io/npm/v/bitset.svg?style=flat)](https://npmjs.org/package/bitset "View this project on npm")
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 

@@ -1,0 +1,60 @@
+{
+  "name": "@raw/vector3",
+  "title": "Vector3",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rawify/Vector3.js",
+  "bugs": "https://github.com/rawify/Vector3.js/issues",
+  "description": "A JavaScript 3D Vector library",
+  "keywords": [
+    "math",
+    "linear algebra",
+    "vector",
+    "3d",
+    "outer",
+    "inner",
+    "cross",
+    "dot",
+    "hadamard",
+    "schur",
+    "product",
+    "lerp"
+  ],
+  "private": false,
+  "main": "./dist/vector3.js",
+  "module": "./dist/vector3.mjs",
+  "types": "./vector3.d.ts",
+  "browser": "./dist/vector3.min.js",
+  "unpkg": "./dist/vector3.min.js",
+  "readmeFilename": "README.md",
+  "exports": {
+    ".": {
+      "types": "./vector3.d.ts",
+      "require": "./dist/vector3.js",
+      "import": "./dist/vector3.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rawify/Vector3.js.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/rawify"
+  },
+  "author": {
+    "name": "Robert Eisele",
+    "email": "robert@raw.org",
+    "url": "https://raw.org/"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "crude-build Vector3"
+  },
+  "devDependencies": {
+    "crude-build": "^0.1.2"
+  }
+}

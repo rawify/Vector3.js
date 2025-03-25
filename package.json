@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "homepage": "https://github.com/rawify/Vector3.js",
   "bugs": "https://github.com/rawify/Vector3.js/issues",
-  "description": "A JavaScript 3D Vector library",
+  "description": "The RAW JavaScript 3D Vector library",
   "keywords": [
     "math",
     "linear algebra",

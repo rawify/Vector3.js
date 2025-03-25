@@ -39,6 +39,12 @@ Or in a Node.js project:
 const Vector3 = require('path/to/vector3.js');
 ```
 
+or 
+
+```javascript
+import Vector3 from '@rawify/vector3';
+```
+
 ## Usage
 
 ### Creating a Vector

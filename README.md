@@ -1,7 +1,7 @@
 # Vector3.js
 
+[![NPM Package](https://img.shields.io/npm/v/@rawify/vector3.svg?style=flat)](https://www.npmjs.com/package/@rawify/vector3 "View this project on npm")
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-
 
 Vector3.js is a 3D vector library for JavaScript, providing a variety of vector operations used in 3D graphics, physics simulations, and geometric computations.
 
@@ -15,7 +15,13 @@ Vector3.js is a 3D vector library for JavaScript, providing a variety of vector 
 
 ## Installation
 
-To use Vector3.js, download or clone the repository:
+You can install `Vector3.js` via npm:
+
+```bash
+npm install @rawify/vector3
+```
+
+Alternatively, download or clone the repository:
 
 ```bash
 git clone https://github.com/rawify/Vector3.js
@@ -273,5 +279,5 @@ npm run test
 
 ## Copyright and Licensing
 
-Copyright (c) 2024, [Robert Eisele](https://raw.org/)
+Copyright (c) 2025, [Robert Eisele](https://raw.org/)
 Licensed under the MIT license.

@@ -1,8 +1,8 @@
 /**
- * @license Vector3 v0.0.1 12/1/2024
+ * @license Vector3 v0.0.1 3/25/2025
  * https://github.com/rawify/Vector3.js
  *
- * Copyright (c) 2024, Robert Eisele (https://raw.org/)
+ * Copyright (c) 2025, Robert Eisele (https://raw.org/)
  * Licensed under the MIT license.
  **/
 
@@ -19,24 +19,24 @@ const EPS = 1e-13;
 /**
 @constructor
 */
-function Vector3(a, b, c) {
+function Vector3(x, y, z) {
 
   let o = this instanceof Vector3 ? this : Object.create(Vector3.prototype);
 
-  if (typeof a === "object") {
-    if (a instanceof Array) {
-      o['x'] = a[0];
-      o['y'] = a[1];
-      o['z'] = a[2];
+  if (typeof x === "object") {
+    if (x instanceof Array) {
+      o['x'] = x[0];
+      o['y'] = x[1];
+      o['z'] = x[2];
     } else {
-      o['x'] = a['x'];
-      o['y'] = a['y'];
-      o['z'] = a['z'];
+      o['x'] = x['x'];
+      o['y'] = x['y'];
+      o['z'] = x['z'];
     }
-  } else if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
-    o['x'] = a;
-    o['y'] = b;
-    o['z'] = c;
+  } else if (!isNaN(x) && !isNaN(y) && !isNaN(z)) {
+    o['x'] = x;
+    o['y'] = y;
+    o['z'] = z;
   }
   return o;
 }
@@ -46,16 +46,28 @@ Vector3.prototype = {
   'y': 0,
   'z': 0,
   'add': function (v) {
-    return newVector3(this['x'] + v['x'], this['y'] + v['y'], this['z'] + v['z']);
+    return newVector3(
+      this['x'] + v['x'],
+      this['y'] + v['y'],
+      this['z'] + v['z']);
   },
   'sub': function (v) {
-    return newVector3(this['x'] - v['x'], this['y'] - v['y'], this['z'] - v['z']);
+    return newVector3(
+      this['x'] - v['x'],
+      this['y'] - v['y'],
+      this['z'] - v['z']);
   },
   'neg': function () {
-    return newVector3(-this['x'], -this['y'], -this['z']);
+    return newVector3(
+      -this['x'],
+      -this['y'],
+      -this['z']);
   },
-  'scale': function (s) {
-    return newVector3(this['x'] * s, this['y'] * s, this['z'] * s);
+  'scale': function (scalar) {
+    return newVector3(
+      this['x'] * scalar,
+      this['y'] * scalar,
+      this['z'] * scalar);
   },
   'prod': function (v) { // Hadamard product or Schur product
     return newVector3(this['x'] * v['x'], this['y'] * v['y'], this['z'] * v['z']);
@@ -85,7 +97,10 @@ Vector3.prototype = {
     const projection = this['projectTo'](b);
     return projection['scale'](2)['sub'](this);
   },
-
+  'scaleAlongAxis': function (axis, scale) {
+    const projected = axis['scale'](this['dot'](axis) / axis['dot'](axis));
+    return this['subtract'](projected)['add'](projected['scale'](scale));
+  },
   'norm': function () {
     return Math.sqrt(this['x'] * this['x'] + this['y'] * this['y'] + this['z'] * this['z']);
   },
@@ -138,7 +153,10 @@ Vector3.prototype = {
       Math.abs(this['z'] - vector['z']) < EPS;
   },
   'isUnit': function () {
-    return Math.abs(this['x'] * this['x'] + this['y'] * this['y'] + this['z'] * this['z'] - 1) < EPS;
+    return Math.abs(
+      this['x'] * this['x'] +
+      this['y'] * this['y'] +
+      this['z'] * this['z'] - 1) < EPS;
   },
   'lerp': function (v, t) {
     return newVector3(

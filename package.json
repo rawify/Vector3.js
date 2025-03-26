@@ -1,7 +1,7 @@
 {
   "name": "@rawify/vector3",
   "title": "Vector3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/rawify/Vector3.js",
   "bugs": "https://github.com/rawify/Vector3.js/issues",
   "description": "The RAW JavaScript 3D Vector library",

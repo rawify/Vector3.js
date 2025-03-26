@@ -70,8 +70,8 @@ let v4 = new Vector3({ x: 4, y: 5, z: 6 });
 Adds the vector `v` to the current vector.
 
 ```javascript
-let v1 = newVector3(1, 2, 3);
-let v2 = newVector3(4, 5, 6);
+let v1 = new Vector3(1, 2, 3);
+let v2 = new Vector3(4, 5, 6);
 let result = v1.add(v2); // {x: 5, y: 7, z: 9}
 ```
 
@@ -109,7 +109,7 @@ let result = v1.prod(v2); // {x: 4, y: 10, z: 18}
 
 ### `dot(v)`
 
-Computes the dot product between the current vector and `v`.
+Computes the [dot product](https://raw.org/book/linear-algebra/dot-product/) between the current vector and `v`.
 
 ```javascript
 let result = v1.dot(v2); // 32
@@ -117,7 +117,7 @@ let result = v1.dot(v2); // 32
 
 ### `cross(v)`
 
-Calculates the 3D cross product between the current vector and `v`.
+Calculates the [3D cross product](https://raw.org/book/linear-algebra/3d-cross-product/) between the current vector and `v`.
 
 ```javascript
 let result = v1.cross(v2); // {x: -3, y: 6, z: -3}
@@ -125,7 +125,7 @@ let result = v1.cross(v2); // {x: -3, y: 6, z: -3}
 
 ### `projectTo(v)`
 
-Projects the current vector onto the vector `v`.
+Projects the current vector onto the vector `v` using [vector projection](https://raw.org/book/linear-algebra/dot-product/).
 
 ```javascript
 let result = v1.projectTo(v2); // Projection of v1 onto v2
@@ -133,15 +133,15 @@ let result = v1.projectTo(v2); // Projection of v1 onto v2
 
 ### `rejectFrom(v)`
 
-Orthogonal rejection of this from vector `v`.
+Finds the orthogonal [vector rejection](https://raw.org/book/linear-algebra/dot-product/) of the current vector from the vector `v`.
 
 ### `reflect(v)`
 
-Reflect this across vector `v`.
+Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-product/) of the current vector across the vector `n`.
 
 ### `norm()`
 
-Returns the magnitude (Euclidean norm) of the current vector.
+Returns the magnitude or length (Euclidean norm) of the current vector.
 
 ```javascript
 let result = v1.norm(); // 3.741
@@ -149,7 +149,7 @@ let result = v1.norm(); // 3.741
 
 ### `norm2()`
 
-Returns the squared magnitude (norm squared) of the current vector.
+Returns the squared magnitude or length (norm squared) of the current vector.
 
 ```javascript
 let result = v1.norm2(); // 14

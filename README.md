@@ -21,11 +21,19 @@ You can install `Vector3.js` via npm:
 npm install @rawify/vector3
 ```
 
+Or with yarn:
+
+```bash
+yarn add @rawify/vector3
+```
+
 Alternatively, download or clone the repository:
 
 ```bash
 git clone https://github.com/rawify/Vector3.js
 ```
+
+## Usage
 
 Include the `vector3.min.js` file in your project:
 
@@ -36,7 +44,7 @@ Include the `vector3.min.js` file in your project:
 Or in a Node.js project:
 
 ```javascript
-const Vector3 = require('path/to/vector3.js');
+const Vector3 = require('@rawify/vector3');
 ```
 
 or 
@@ -45,7 +53,6 @@ or
 import Vector3 from '@rawify/vector3';
 ```
 
-## Usage
 
 ### Creating a Vector
 
@@ -139,6 +146,18 @@ Finds the orthogonal [vector rejection](https://raw.org/book/linear-algebra/dot-
 
 Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-product/) of the current vector across the vector `n`.
 
+### `refract(n, eta)`
+
+Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η_in / η_out` (like from air η_in=1.0 to water η_out=1.33).
+
+```javascript
+let n = new Vector3(0, 1, 0);       // Surface normal pointing up
+let eta = 1.0 / 1.33;             // Air to glass
+let result = v1.refract(n, eta); // Refraction of v1 across n
+```
+
+Returns a new unit vector representing the **refracted direction**, or `null` if **total internal reflection** occurs.
+
 ### `norm()`
 
 Returns the magnitude or length (Euclidean norm) of the current vector.
@@ -179,6 +198,33 @@ Sets the values of the current vector to match the vector `v`.
 v1.set(v2); // v1 is now {x: 4, y: 5, z: 6}
 ```
 
+### `rotateX(angle)`
+
+Rotates the vector around the **X-axis** by the given angle (in radians):
+
+```javascript
+let v = new Vector3(1, 2, 3);
+v.rotateX(Math.PI / 2); // Rotates v 90° around the X-axis
+```
+
+### `rotateY(angle)`
+
+Rotates the vector around the **Y-axis** by the given angle (in radians):
+
+```javascript
+let v = new Vector3(1, 2, 3);
+v.rotateY(Math.PI / 2); // Rotates v 90° around the Y-axis
+```
+
+### `rotateZ(angle)`
+
+Rotates the vector around the **Z-axis** by the given angle (in radians):
+
+```javascript
+let v = new Vector3(1, 2, 3);
+v.rotateZ(Math.PI / 2); // Rotates v 90° around the Z-axis
+```
+
 ### `applyMatrix(M)`
 
 Applies a transformation matrix `M` to the current vector.
@@ -191,6 +237,8 @@ let matrix = [
 ];
 let result = v1.applyMatrix(matrix); // Applies matrix transformation
 ```
+
+If you need to make more CSS related matrix transforms, have a look at [UnifiedTransform.js](https://github.com/rawify/UnifiedTransform.js).
 
 ### `apply(fn, v)`
 

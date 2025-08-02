@@ -91,6 +91,19 @@ Vector3.prototype = {
     const projection = this['projectTo'](b);
     return projection['scale'](2)['sub'](this);
   },
+  'refract': function (normal, eta) { // Refraction of unit vector across unit normal with η = η_in / η_out
+
+    const dot = this.dot(normal);
+    const k = 1 - eta * eta * (1 - dot * dot); // = cos^2 θ_t
+    if (k < 0) return null; // total internal reflection
+
+    const sqrtk = Math.sqrt(k);
+
+    return newVector3( // t̂ = η â − (η(â·n̂) + sqrtk) n̂
+      eta * this['x'] - (eta * dot + sqrtk) * normal['x'],
+      eta * this['y'] - (eta * dot + sqrtk) * normal['y'],
+      eta * this['z'] - (eta * dot + sqrtk) * normal['z']);
+  },
   'scaleAlongAxis': function (axis, scale) {
     const projected = axis['scale'](this['dot'](axis) / axis['dot'](axis));
     return this['subtract'](projected)['add'](projected['scale'](scale));
@@ -116,6 +129,27 @@ Vector3.prototype = {
     this['x'] = v['x'];
     this['y'] = v['y'];
     this['z'] = v['z'];
+  },
+  'rotateX': function (angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const y = this.y * cos - this.z * sin;
+    const z = this.z * cos + this.y * sin;
+    return newVector3(this.x, y, z);
+  },
+  'rotateY': function (angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const x = this.x * cos + this.z * sin;
+    const z = this.z * cos - this.x * sin;
+    return newVector3(x, this.y, z);
+  },
+  'rotateZ': function (angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const x = this.x * cos - this.y * sin;
+    const y = this.y * cos + this.x * sin;
+    return newVector3(x, y, this.z);
   },
   /**
    * Apply a transformation matrix

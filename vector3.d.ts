@@ -16,6 +16,7 @@ declare class Vector3 {
     projectTo(a: Vector3): Vector3;
     rejectFrom(a: Vector3): Vector3;
     reflect(a: Vector3): Vector3;
+    refract(normal: Vector3, eta: number): Vector3;
     norm(): number;
     norm2(): number;
     normalize(): Vector3;

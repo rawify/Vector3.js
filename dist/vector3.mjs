@@ -93,7 +93,7 @@ Vector3.prototype = {
   },
   'refract': function (normal, eta) { // Refraction of unit vector across unit normal with η = η_in / η_out
 
-    const dot = this.dot(normal);
+    const dot = this['dot'](normal);
     const k = 1 - eta * eta * (1 - dot * dot); // = cos^2 θ_t
     if (k < 0) return null; // total internal reflection
 

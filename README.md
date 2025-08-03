@@ -140,15 +140,15 @@ let result = v1.projectTo(v2); // Projection of v1 onto v2
 
 ### `rejectFrom(v)`
 
-Finds the orthogonal [vector rejection](https://raw.org/book/linear-algebra/dot-product/) of the current vector from the vector `v`.
+Finds the orthogonal [vector rejection](https://raw.org/book/linear-algebra/dot-product/#reject) of the current vector from the vector `v`.
 
 ### `reflect(v)`
 
-Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-product/) of the current vector across the vector `n`.
+Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-product/#reflect) of the current vector across the vector `n`.
 
 ### `refract(n, eta)`
 
-Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η_in / η_out` (like from air η_in=1.0 to water η_out=1.33).
+Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/#refract) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η_in / η_out` (like from air η_in=1.0 to water η_out=1.33).
 
 ```javascript
 let n = new Vector3(0, 1, 0);       // Surface normal pointing up
@@ -245,7 +245,11 @@ If you need to make more CSS related matrix transforms, have a look at [UnifiedT
 Applies a function `fn` (such as `Math.abs`, `Math.min`, `Math.max`) to the components of the current vector and an optional vector `v`.
 
 ```javascript
-let result = v1.apply(Math.max, v2); // Applies Math.max to the components of v1 and v2
+let result1 = v1.apply(Math.min, v2); // Determines the minimum of v1 and v2 on each component
+let result2 = v1.apply(Math.max, v2); // Determines the maximum of v1 and v2 on each component
+let result3 = v1.apply(Math.round); // Rounds the components of the vector
+let result4 = v1.apply(Math.floor); // Floors the components of the vector
+let result4 = v1.apply(x => Math.min(upper, Math.max(lower, x))); // Clamps the component to the interval [lower, upper]
 ```
 
 ### `toArray()`

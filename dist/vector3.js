@@ -1,6 +1,7 @@
 'use strict';
 
 function newVector3(x, y, z) {
+  // Single hidden class: Object.create with preset prototype
   const o = Object.create(Vector3.prototype);
   o['x'] = x;
   o['y'] = y;
@@ -70,60 +71,80 @@ Vector3.prototype = {
     return this['x'] * v['x'] + this['y'] * v['y'] + this['z'] * v['z'];
   },
   'cross': function (v) {
+    const ax = this['x'], ay = this['y'], az = this['z'];
+    const vx = v['x'], vy = v['y'], vz = v['z'];
     return newVector3(
-      this['y'] * v['z'] - this['z'] * v['y'],
-      this['z'] * v['x'] - this['x'] * v['z'],
-      this['x'] * v['y'] - this['y'] * v['x']
+      ay * vz - az * vy,
+      az * vx - ax * vz,
+      ax * vy - ay * vx
     );
   },
-  'projectTo': function (a) { // Orthogonal project this onto a
-
-    const pct = (this['x'] * a['x'] + this['y'] * a['y'] + this['z'] * a['z']) / (a['x'] * a['x'] + a['y'] * a['y'] + a['z'] * a['z']);
-
-    return newVector3(a['x'] * pct, a['y'] * pct, a['z'] * pct);
+  /**
+    * @see https://raw.org/book/linear-algebra/dot-product/
+    */
+  'projectTo': function (a) { // Orthogonal projection of this onto a
+    const ax = a['x'], ay = a['y'], az = a['z'];
+    const pct = (this['x'] * ax + this['y'] * ay + this['z'] * az) / (ax * ax + ay * ay + az * az);
+    return newVector3(ax * pct, ay * pct, az * pct);
   },
-  'rejectFrom': function (b) { // Orthogonal reject this from b
-
-    const projection = this['projectTo'](b);
-    return this['sub'](projection);
+  /**
+   * @see https://raw.org/book/linear-algebra/dot-product/
+   */
+  'rejectFrom': function (b) { // Orthogonal rejection of this from b
+    // this - proj_b(this)
+    const ax = b['x'], ay = b['y'], az = b['z'];
+    const t = (this['x'] * ax + this['y'] * ay + this['z'] * az) / (ax * ax + ay * ay + az * az);
+    return newVector3(this['x'] - ax * t, this['y'] - ay * t, this['z'] - az * t);
   },
+  /**
+   * @see https://raw.org/book/linear-algebra/dot-product/
+   */
   'reflect': function (b) { // Reflect this across b
-    const projection = this['projectTo'](b);
-    return projection['scale'](2)['sub'](this);
+    const ax = b['x'], ay = b['y'], az = b['z'];
+    const t = (this['x'] * ax + this['y'] * ay + this['z'] * az) / (ax * ax + ay * ay + az * az);
+    const px = ax * t, py = ay * t, pz = az * t;
+    return newVector3(2 * px - this['x'], 2 * py - this['y'], 2 * pz - this['z']);
   },
-  'refract': function (normal, eta) { // Refraction of unit vector across unit normal with η = η_in / η_out
-
-    const dot = this['dot'](normal);
+  /**
+   * @see https://raw.org/book/linear-algebra/dot-product/
+   */
+  'refract': function (normal, eta) { // Unit this across unit normal n; η = η_in / η_out
+    const dot = this['x'] * normal['x'] + this['y'] * normal['y'] + this['z'] * normal['z'];
     const k = 1 - eta * eta * (1 - dot * dot); // = cos^2 θ_t
     if (k < 0) return null; // total internal reflection
-
-    const sqrtk = Math.sqrt(k);
-
-    return newVector3( // t̂ = η â − (η(â·n̂) + sqrtk) n̂
-      eta * this['x'] - (eta * dot + sqrtk) * normal['x'],
-      eta * this['y'] - (eta * dot + sqrtk) * normal['y'],
-      eta * this['z'] - (eta * dot + sqrtk) * normal['z']);
+    const t = eta * dot + Math.sqrt(k);
+    return newVector3(
+      eta * this['x'] - t * normal['x'],
+      eta * this['y'] - t * normal['y'],
+      eta * this['z'] - t * normal['z']);
   },
-  'scaleAlongAxis': function (axis, scale) {
-    const projected = axis['scale'](this['dot'](axis) / axis['dot'](axis));
-    return this['subtract'](projected)['add'](projected['scale'](scale));
+  'scaleAlongAxis': function (axis, s) {
+    // Decompose this into parallel + perpendicular, then scale the parallel component
+    const ax = axis['x'], ay = axis['y'], az = axis['z'];
+    const denom = ax * ax + ay * ay + az * az;
+    const t = (this['x'] * ax + this['y'] * ay + this['z'] * az) / denom;
+    const px = ax * t, py = ay * t, pz = az * t;
+    // (this - p) + s * p
+    return newVector3(this['x'] - px + s * px, this['y'] - py + s * py, this['z'] - pz + s * pz);
   },
   'norm': function () {
-    return Math.sqrt(this['x'] * this['x'] + this['y'] * this['y'] + this['z'] * this['z']);
+    const ax = this['x'], ay = this['y'], az = this['z'];
+    return Math.sqrt(ax * ax + ay * ay + az * az);
   },
   'norm2': function () {
-    return this['x'] * this['x'] + this['y'] * this['y'] + this['z'] * this['z'];
+    const ax = this['x'], ay = this['y'], az = this['z'];
+    return ax * ax + ay * ay + az * az;
   },
   'normalize': function () {
-    const l = this.norm();
-    if (l === 0 || l === 1) return this;
-    return newVector3(this['x'] / l, this['y'] / l, this['z'] / l);
+    const ax = this['x'], ay = this['y'], az = this['z'];
+    const l2 = ax * ax + ay * ay + az * az;
+    if (l2 === 0 || l2 === 1) return this; // unit or zero: return self to avoid alloc
+    const inv = 1 / Math.sqrt(l2);
+    return newVector3(ax * inv, ay * inv, az * inv);
   },
   'distance': function (v) {
-    const x = this['x'] - v['x'];
-    const y = this['y'] - v['y'];
-    const z = this['z'] - v['z'];
-    return Math.sqrt(x * x + y * y + z * z);
+    const dx = this['x'] - v['x'], dy = this['y'] - v['y'], dz = this['z'] - v['z'];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
   },
   'set': function (v) {
     this['x'] = v['x'];
@@ -131,41 +152,39 @@ Vector3.prototype = {
     this['z'] = v['z'];
   },
   'rotateX': function (angle) {
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
-    const y = this.y * cos - this.z * sin;
-    const z = this.z * cos + this.y * sin;
-    return newVector3(this.x, y, z);
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    const y = this['y'] * cos - this['z'] * sin;
+    const z = this['z'] * cos + this['y'] * sin;
+    return newVector3(this['x'], y, z);
   },
   'rotateY': function (angle) {
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
-    const x = this.x * cos + this.z * sin;
-    const z = this.z * cos - this.x * sin;
-    return newVector3(x, this.y, z);
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    const x = this['x'] * cos + this['z'] * sin;
+    const z = this['z'] * cos - this['x'] * sin;
+    return newVector3(x, this['y'], z);
   },
   'rotateZ': function (angle) {
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
-    const x = this.x * cos - this.y * sin;
-    const y = this.y * cos + this.x * sin;
-    return newVector3(x, y, this.z);
+    const cos = Math.cos(angle), sin = Math.sin(angle);
+    const x = this['x'] * cos - this['y'] * sin;
+    const y = this['y'] * cos + this['x'] * sin;
+    return newVector3(x, y, this['z']);
   },
   /**
-   * Apply a transformation matrix
+   * Apply a 3x3 or 4x4 (row-major) matrix.
    * 
    * @param {Array} M The transformation matrix to be applied
    * @returns 
    */
   'applyMatrix': function (M) {
     M = M['M'] || M;
+    const ax = this['x'], ay = this['y'], az = this['z'];
     // No normalization is applied for homogeneous coordinates, since we only work with Affine Transformations (no Perspective Transformations)
     return newVector3(
-      this['x'] * M[0][0] + this['y'] * M[0][1] + this['z'] * M[0][2] + (M[0][3] || 0),
-      this['x'] * M[1][0] + this['y'] * M[1][1] + this['z'] * M[1][2] + (M[1][3] || 0),
-      this['x'] * M[2][0] + this['y'] * M[2][1] + this['z'] * M[2][2] + (M[2][3] || 0));
+      ax * M[0][0] + ay * M[0][1] + az * M[0][2] + (M[0][3] || 0),
+      ax * M[1][0] + ay * M[1][1] + az * M[1][2] + (M[1][3] || 0),
+      ax * M[2][0] + ay * M[2][1] + az * M[2][2] + (M[2][3] || 0));
   },
-  'apply': function (fn, v = { 'x': 0, 'y': 0 }) { // Math.abs, Math.min, Math.max
+  'apply': function (fn, v = { 'x': 0, 'y': 0, 'z': 0 }) { // Math.abs, Math.min, Math.max
     return newVector3(fn(this['x'], v['x']), fn(this['y'], v['y']), fn(this['z'], v['z']));
   },
   'toArray': function () {
@@ -175,10 +194,10 @@ Vector3.prototype = {
     return newVector3(this['x'], this['y'], this['z']);
   },
   'equals': function (vector) {
-    return this === vector ||
+    return this === vector || (
       Math.abs(this['x'] - vector['x']) < EPS &&
       Math.abs(this['y'] - vector['y']) < EPS &&
-      Math.abs(this['z'] - vector['z']) < EPS;
+      Math.abs(this['z'] - vector['z']) < EPS);
   },
   'isUnit': function () {
     return Math.abs(
@@ -187,13 +206,30 @@ Vector3.prototype = {
       this['z'] * this['z'] - 1) < EPS;
   },
   'lerp': function (v, t) {
+    const ax = this['x'], ay = this['y'], az = this['z'];
     return newVector3(
-      this['x'] + t * (v['x'] - this['x']),
-      this['y'] + t * (v['y'] - this['y']),
-      this['z'] + t * (v['z'] - this['z']));
+      ax + t * (v['x'] - ax),
+      ay + t * (v['y'] - ay),
+      az + t * (v['z'] - az));
   },
-  "toString": function () {
+  'toString': function () {
     return "(" + this['x'] + ", " + this['y'] + ", " + this['z'] + ")";
+  },
+
+  // -------- In-place ops (mutating, suffix `$`) --------
+  // Useful to avoid allocations in tight loops.
+
+  'add$': function (v) { this['x'] += v['x']; this['y'] += v['y']; this['z'] += v['z']; return this; },
+  'sub$': function (v) { this['x'] -= v['x']; this['y'] -= v['y']; this['z'] -= v['z']; return this; },
+  'neg$': function () { this['x'] = -this['x']; this['y'] = -this['y']; this['z'] = -this['z']; return this; },
+  'scale$': function (s) { this['x'] *= s; this['y'] *= s; this['z'] *= s; return this; },
+  'prod$': function (v) { this['x'] *= v['x']; this['y'] *= v['y']; this['z'] *= v['z']; return this; },
+  'normalize$': function () {
+    const l2 = this['x'] * this['x'] + this['y'] * this['y'] + this['z'] * this['z'];
+    if (l2 === 0 || l2 === 1) return this;
+    const inv = 1 / Math.sqrt(l2);
+    this['x'] *= inv; this['y'] *= inv; this['z'] *= inv;
+    return this;
   }
 };
 
@@ -206,8 +242,7 @@ Vector3['fromPoints'] = function (a, b) {
 };
 
 Vector3['fromBarycentric'] = function (A, B, C, u, v) {
-  const { x, y, z } = A;
-
+  const x = A['x'], y = A['y'], z = A['z'];
   return newVector3(
     x + (B['x'] - x) * u + (C['x'] - x) * v,
     y + (B['y'] - y) * u + (C['y'] - y) * v,

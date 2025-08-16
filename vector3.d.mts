@@ -39,4 +39,4 @@ declare class Vector3 {
     static fromBarycentric(A: Vector3, B: Vector3, C: Vector3, u: number, v: number): Vector3;
 }
 
-export = Vector3;
+export { Vector3 as default, Vector3 };

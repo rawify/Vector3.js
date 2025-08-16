@@ -1,10 +1,10 @@
 {
   "name": "@rawify/vector3",
   "title": "Vector3",
-  "version": "0.0.5",
+  "version": "0.0.6",
+  "description": "The RAW JavaScript 3D Vector library",
   "homepage": "https://github.com/rawify/Vector3.js",
   "bugs": "https://github.com/rawify/Vector3.js/issues",
-  "description": "The RAW JavaScript 3D Vector library",
   "keywords": [
     "math",
     "linear algebra",
@@ -22,20 +22,41 @@
   "private": false,
   "main": "./dist/vector3.js",
   "module": "./dist/vector3.mjs",
-  "types": "./vector3.d.ts",
   "browser": "./dist/vector3.min.js",
   "unpkg": "./dist/vector3.min.js",
-  "readmeFilename": "README.md",
+  "types": "./vector3.d.ts",
   "exports": {
     ".": {
-      "types": "./vector3.d.ts",
-      "require": "./dist/vector3.js",
-      "import": "./dist/vector3.mjs"
+      "import": {
+        "types": "./vector3.d.mts",
+        "default": "./dist/vector3.mjs"
+      },
+      "require": {
+        "types": "./vector3.d.ts",
+        "default": "./dist/vector3.js"
+      },
+      "browser": {
+        "types": "./vector3.d.ts",
+        "default": "./dist/vector3.min.js"
+      },
+      "default": {
+        "types": "./vector3.d.ts",
+        "default": "./dist/vector3.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "<4.7": {
+      "*": [
+        "vector3.d.ts"
+      ]
     }
   },
+  "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git@github.com:rawify/Vector3.js.git"
+    "url": "git+ssh://git@github.com/rawify/Vector3.js.git"
   },
   "funding": {
     "type": "github",

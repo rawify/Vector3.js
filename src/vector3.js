@@ -1,5 +1,5 @@
 /**
- * @license Vector3 v0.0.5 8/13/2025
+ * @license Vector3 v0.0.6 8/16/2025
  * https://github.com/rawify/Vector3.js
  *
  * Copyright (c) 2025, Robert Eisele (https://raw.org/)

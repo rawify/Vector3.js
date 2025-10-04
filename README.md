@@ -148,7 +148,7 @@ Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-produ
 
 ### `refract(n, eta)`
 
-Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/#refract) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η<sub>in</sub> / η<sub>out</sub>` (like from air η_in=1.0 to water η_out=1.33).
+Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/#refract) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio eta = η<sub>in</sub> / η<sub>out</sub> (like from air η_in=1.0 to water η_out=1.33).
 
 ```javascript
 let n = new Vector3(0, 1, 0);       // Surface normal pointing up

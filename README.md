@@ -148,7 +148,7 @@ Determines the [vector reflection](https://raw.org/book/linear-algebra/dot-produ
 
 ### `refract(n, eta)`
 
-Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/#refract) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η_in / η_out` (like from air η_in=1.0 to water η_out=1.33).
+Determines the [vector refraction](https://raw.org/book/linear-algebra/dot-product/#refract) of the current **unit vector** across a surface with **unit normal** `n`, using the index ratio `eta = η<sub>in</sub> / η<sub>out</sub>` (like from air η_in=1.0 to water η_out=1.33).
 
 ```javascript
 let n = new Vector3(0, 1, 0);       // Surface normal pointing up
@@ -312,7 +312,7 @@ let result = Vector3.fromPoints({x: 1, y: 1, z: 1}, {x: 4, y: 5, z: 6}); // {x: 
 
 ### `Vector3.fromBarycentric(A, B, C, u, v)`
 
-Given a triangle (A, B, C) and a barycentric coordinate (u, v[, w = 1 - u - v]) calculate the cartesian coordinate in R^3.
+Given a triangle (A, B, C) and a barycentric coordinate (u, v[, w = 1 - u - v]) calculate the cartesian coordinate in R³.
 
 ## Coding Style
 
